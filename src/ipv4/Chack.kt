@@ -23,7 +23,7 @@ fun main() {
 
     }
 fun check(testCase: String, actual: Boolean, expected: Boolean) :String{
-    val result = if (actual == expected) "True" else "False"
+    val result = if (actual == expected) "TRUE" else "FALSE"
     return " $testCase --> $result"
 }
 

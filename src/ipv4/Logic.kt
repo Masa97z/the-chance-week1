@@ -7,12 +7,11 @@ fun ipv4(ip: String): Boolean {
 
         if (segment.length > 1 && segment[0] == '0') return false
 
-        for (char in segment) {
-            if (!char.isDigit()) return false
-        }
+        if (segment.any { !it.isDigit() }) return false
 
         val num = segment.toInt()
-        if (num < 0 || num > 255) return false
+
+        if (num !in 0..255) return false
     }
 
     return true

@@ -1,39 +1,74 @@
-
-fun sudoku(grid: Array<IntArray>): Boolean {
+fun hasDuplicateInRows(grid: Array<IntArray>): Boolean {
     for (row in grid) {
-        if (!isValidUnit(row)) return false
-    }
+        val seen = mutableSetOf<Int>()
+        for (num in row) {
+            if (num != 0 && !seen.add(num)) {
+                return true
 
-    for (col in 0..<9) {
-        val column = IntArray(9) { grid[it][col] }
-        if (!isValidUnit(column)) return false
-    }
-
-    for (boxRow in 0..<3) {
-        for (boxCol in 0..<3) {
-            val subgrid = IntArray(9) {
-                val row = boxRow * 3 + it / 3
-                val col = boxCol * 3 + it % 3
-                grid[row][col]
             }
-            if (!isValidUnit(subgrid)) return false
         }
     }
-
-    return true
+    return false
 }
 
- fun isValidUnit(unit: IntArray): Boolean {
-    val seen = BooleanArray(10)
 
-    for (num in unit) {
-        if (num < 1 || num > 9) return false
-
-        if (seen[num]) return false
-        seen[num] = true
+fun hasDuplicateInColumns(grid: Array<IntArray>): Boolean {
+    for (col in 0..<grid[0].size) {
+        val seen = mutableSetOf<Int>()
+        for (row in grid) {
+            val num = row[col]
+            if (num != 0 && !seen.add(num)) {
+                return true
+            }
+        }
     }
-
-    return true
+    return false
 }
 
+fun hasDuplicateInSubGrids(grid: Array<IntArray>): Boolean {
 
+    for (startRow in arrayOf(0, 3, 6)) {
+        for (startCol in arrayOf(0, 3, 6)) {
+            val seen = mutableSetOf<Int>()
+            for (i in startRow..<startRow + 3) {
+                for (j in startCol..<startCol + 3) {
+                    val num = grid[i][j]
+                    if (num != 0 && !seen.add(num)) {
+                        return true
+                    }
+                }
+            }
+        }
+    }
+    return false
+}
+
+fun hasNegativeValues(grid: Array<IntArray>): Boolean {
+    for (row in grid) {
+        for (num in row) {
+            if (num < 0) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
+fun containsZero(grid: Array<IntArray>): Boolean {
+    for (row in grid) {
+        for (num in row) {
+            if (num == 0) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
+fun sudoku(grid: Array<IntArray>): Boolean {
+    return !hasDuplicateInRows(grid) &&
+            !hasDuplicateInColumns(grid) &&
+            !hasDuplicateInSubGrids(grid) &&
+            !hasNegativeValues(grid) &&
+            !containsZero(grid)
+}
